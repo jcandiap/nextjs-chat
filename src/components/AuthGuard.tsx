@@ -32,6 +32,8 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!isCheckingAuth && !authUser && !publicRoutes.includes(navigation)) {
       router.push('/signin')
+    } else {
+      router.push('/')
     }
   }, [isCheckingAuth, authUser, router])
 
