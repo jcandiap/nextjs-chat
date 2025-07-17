@@ -5,6 +5,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { Loader } from "lucide-react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Navbar } from "@/components/Navbar";
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore() as {
@@ -32,5 +33,10 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     );
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <Navbar />
+      {children}
+    </>
+  );
 }
