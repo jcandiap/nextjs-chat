@@ -3,6 +3,7 @@
 import { useAuthStore } from '@/store/useAuthStore'
 import { AuthStore } from '@/types/authstore.type';
 import { Camera } from 'lucide-react';
+import Image from 'next/image';
 import React, { ChangeEventHandler, FormEventHandler } from 'react'
 
 const imagePaths = [
@@ -33,8 +34,10 @@ export default function Profile() {
 
                     <div className='flex flex-col items-center gap-4'>
                         <div className='relative'>
-                            <img 
+                            <Image 
                                 src={authUser.profileImage || randomImagePath}
+                                width={128}
+                                height={128}
                                 alt='Profile'
                                 className='size-32 rounded-full object-cover border-4'
                             />
