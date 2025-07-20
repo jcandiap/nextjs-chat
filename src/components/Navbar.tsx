@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthStore } from '@/store/useAuthStore'
-import { LogOut, MessageSquare, Settings, User } from 'lucide-react';
+import { LogOut, Menu, MessageSquare, Settings, User } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react'
 
@@ -12,6 +12,12 @@ type AuthStore = {
 
 const Navbar = () => {
     const { logout, authUser } = useAuthStore() as AuthStore;
+
+    const handleBlurDropdownElement = () => { 
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    };
 
     return (
       <header className='border-b border-base-300 fixed w-full top-0 z-40 backdrop-blur-lg bg-base-100/80'>
@@ -26,22 +32,29 @@ const Navbar = () => {
               </Link>
             </div>
             <div className='flex items-center gap-2'>
-              <Link href={ "/settings" } className='btn btn-sm gap-2 transition-colors'>
+              <Link href={ "/settings" } className='btn btn-ghost tooltip tooltip-bottom' data-tip="Settings">
                 <Settings className='w-4 h-4'/>
-                <span className='hidden sm:inline'>Settings</span>
               </Link>
               { authUser && (
-                <>
-                  <Link href={ "/profile" } className='btn btn-sm gap-2'>
-                    <User className='size-5'/>
-                    <span className='hidden sm:inline'>Profile</span>
-                  </Link>
-
-                  <button type='button' className='flex gap-2 items-center' onClick={logout}>
-                    <LogOut className='size-5'/>
-                    <span className='hidden sm:inline'>Logout</span>
-                  </button>
-                </>
+                <div className="dropdown">
+                  <div tabIndex={0} role="button" className="btn btn-ghost m-1 tooltip tooltip-bottom" data-tip="User">
+                    <Menu className='size-5'/>
+                  </div>
+                  <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-1 shadow-sm">
+                    <li>
+                      <Link href={ "/profile" } className='btn btn-ghost' onClick={handleBlurDropdownElement}>
+                        <User className='size-5'/>
+                        <span className="hidden sm:inline">Profile</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <button type='button' className='btn btn-ghost' onClick={() => { logout(); handleBlurDropdownElement() }}>
+                        <LogOut className='size-5'/>
+                        <span className="hidden sm:inline">Logout</span>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               )}
             </div>
           </div>

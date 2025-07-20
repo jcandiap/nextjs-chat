@@ -9,5 +9,7 @@ export type AuthStore = {
   authUser: any;
   isLoggingIn: boolean;
   signup: (data:any) => void,
-  isSigningUp: boolean
+  isSigningUp: boolean,
+  isUpdatingProfile: boolean,
+  updateProfile: (data:any) => void
 };
