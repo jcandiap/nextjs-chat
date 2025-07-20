@@ -36,7 +36,7 @@ const Navbar = () => {
                 <Settings className='w-4 h-4'/>
               </Link>
               { authUser && (
-                <div className="dropdown">
+                <div className="dropdown dropdown-bottom dropdown-end">
                   <div tabIndex={0} role="button" className="btn btn-ghost m-1 tooltip tooltip-bottom" data-tip="User">
                     <Menu className='size-5'/>
                   </div>
@@ -44,13 +44,13 @@ const Navbar = () => {
                     <li>
                       <Link href={ "/profile" } className='btn btn-ghost' onClick={handleBlurDropdownElement}>
                         <User className='size-5'/>
-                        <span className="hidden sm:inline">Profile</span>
+                        <span className="inline">Profile</span>
                       </Link>
                     </li>
                     <li>
                       <button type='button' className='btn btn-ghost' onClick={() => { logout(); handleBlurDropdownElement() }}>
                         <LogOut className='size-5'/>
-                        <span className="hidden sm:inline">Logout</span>
+                        <span className="inline">Logout</span>
                       </button>
                     </li>
                   </ul>
