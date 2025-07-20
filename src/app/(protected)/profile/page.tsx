@@ -2,9 +2,9 @@
 
 import { useAuthStore } from '@/store/useAuthStore'
 import { AuthStore } from '@/types/authstore.type';
-import { Camera } from 'lucide-react';
+import { Camera, Mail, User } from 'lucide-react';
 import Image from 'next/image';
-import React, { ChangeEventHandler, FormEventHandler } from 'react'
+import React, { ChangeEventHandler, FormEventHandler, useState } from 'react'
 
 const imagePaths = [
     '/avatars/bear.png',
@@ -15,9 +15,21 @@ const imagePaths = [
 
 export default function Profile() {
     const { authUser, isUpdatingProfile, updateProfile } = useAuthStore() as AuthStore;
+    const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
 
     const handleImageUpdate:ChangeEventHandler<HTMLInputElement> = async (e) => {
         e.preventDefault();
+        const file = e.target.files && e.target.files[0];
+        if( !file ) return;
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = async () => {
+            const base64Image = reader.result;
+            setSelectedImage(base64Image);
+            await updateProfile({ profilePic: base64Image });
+        }
     }
 
     const randomIndex = Math.floor(Math.random() * imagePaths.length);
@@ -35,7 +47,7 @@ export default function Profile() {
                     <div className='flex flex-col items-center gap-4'>
                         <div className='relative'>
                             <Image 
-                                src={authUser.profileImage || randomImagePath}
+                                src={selectedImage || authUser.profilePic || randomImagePath}
                                 width={128}
                                 height={128}
                                 alt='Profile'
@@ -62,6 +74,38 @@ export default function Profile() {
                         <p className='text-sm text-zinc-400'>
                             {isUpdatingProfile ? 'Uploading...' : 'Click the camera icon to update your photo'}
                         </p>
+                    </div>
+
+                    <div className='space-y-6'>
+                        <div className='space-y-1.5'>
+                            <div className='text-sm text-zinc-400 flex items-center gap-2'>
+                                <User className='w-4 h-4'/>
+                                Full Name
+                            </div>
+                            <p className='px-4 py-2.5 bg-base-200 rounded-lg border'>{authUser?.fullName}</p>
+                        </div>
+
+                        <div className='space-y-1.5'>
+                            <div className='text-sm text-zinc-400 flex items-center gap-2'>
+                                <Mail className='w-4 h-4'/>
+                                Email Address
+                            </div>
+                            <p className='px-4 py-2.5 bg-base-200 rounded-lg border'>{authUser?.email}</p>
+                        </div>
+                    </div>
+
+                    <div className='mt-6 bg-base-300 rounded-xl p-6'>
+                        <h2 className='text-lg font-medium mb-4'>Account Information</h2>
+                        <div className='space-y-3 text-sm'>
+                            <div className='flex items-center justify-between py-2 border-b border-zinc-700'>
+                                <span>Member Since</span>
+                                <span>{authUser.createdAt?.split("T")[0]}</span>
+                            </div>
+                            <div className='flex items-center justify-between py-2'>
+                                <span>Account Status</span>
+                                <span className='text-green-500'>Active</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
