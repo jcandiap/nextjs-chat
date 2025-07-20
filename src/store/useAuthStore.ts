@@ -1,4 +1,5 @@
 import { axiosInstance } from "@/lib/axios";
+import { LoginForm } from "@/types/authstore.type";
 import toast from "react-hot-toast";
 import { create } from "zustand";
 
@@ -33,6 +34,19 @@ export const useAuthStore = create((set) => ({
             toast.error(error.response.data.message);
         } finally {
             set({ isSigningUp: false });
+        }
+    },
+
+    login: async (loginFormData:LoginForm) => {
+        set({ isLogingIng: true });
+        try {
+            const response = await axiosInstance.post("/auth/login", loginFormData);
+            set({ authUser: response.data });
+            toast.success("Login successfully");
+        } catch (error:any) {
+            toast.error(error.response.data.message);
+        } finally {
+            set({ isLogingIng: false });
         }
     },
 

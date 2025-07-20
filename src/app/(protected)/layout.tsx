@@ -20,7 +20,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 
   useEffect(() => {
     if (!isCheckingAuth && !authUser) {
-      router.push("/signin"); // Redirige si no está autenticado
+      router.push("/signup"); // Redirige si no está autenticado
     }
   }, [isCheckingAuth, authUser, router]);
 

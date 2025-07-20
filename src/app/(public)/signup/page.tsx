@@ -1,24 +1,25 @@
 "use client";
 
 import { useAuthStore } from '@/store/useAuthStore';
-import React, { FormEventHandler, useState } from 'react'
+import React, { FormEventHandler, useEffect, useState } from 'react'
 import { MessageSquare, User, Mail, Lock, Eye, EyeClosed, Loader } from 'lucide-react'
 import Link from 'next/link';
 import AuthImagePattern from '@/components/AuthImagePattern';
 import toast from 'react-hot-toast';
+import { AuthStore } from '@/types/authstore.type';
+import { useRouter } from 'next/navigation';
 
-export default function Signin() {
+export default function Signup() {
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
         password: ""
     });
+
+    const router = useRouter();
     
-    const { signup, isSigningUp } = useAuthStore() as {
-        signup: (data:any) => void,
-        isSigningUp: boolean
-    };
+    const { signup, isSigningUp, authUser } = useAuthStore() as AuthStore;
 
     const validateForm = () => {
         if( !formData.fullName.trim() ) return toast.error("Full name is required");
@@ -38,6 +39,12 @@ export default function Signin() {
             signup(formData);
         }
     }
+
+    useEffect(() => {
+        if( authUser !== null ) {
+            router.push("/");
+        }
+    }, [authUser]);
 
     return (
         <div className='min-h-screen grid lg:grid-cols-2'>
