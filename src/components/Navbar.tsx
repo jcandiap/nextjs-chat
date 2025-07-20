@@ -10,7 +10,7 @@ type AuthStore = {
   authUser: any;
 };
 
-export const Navbar = () => {
+const Navbar = () => {
     const { logout, authUser } = useAuthStore() as AuthStore;
 
     return (
@@ -49,3 +49,5 @@ export const Navbar = () => {
       </header>
     )
 }
+
+export default Navbar;
