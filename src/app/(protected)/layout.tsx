@@ -5,8 +5,12 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { useStoreTheme } from "@/store/useStoreTheme";
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
+
+  const { theme } = useStoreTheme();
+
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore() as {
     authUser: any
     checkAuth: () => void
@@ -33,9 +37,9 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <>
+    <div data-theme={ theme }>
       <Navbar />
       <main>{children}</main>
-    </>
+    </div>
   );
 }
