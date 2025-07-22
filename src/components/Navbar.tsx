@@ -3,21 +3,27 @@
 import { useAuthStore } from '@/store/useAuthStore'
 import { LogOut, Menu, MessageSquare, Settings, User } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react'
 
 type AuthStore = {
-  logout: () => void;
+  logout: (callback:Function) => void;
   authUser: any;
 };
 
 const Navbar = () => {
     const { logout, authUser } = useAuthStore() as AuthStore;
+    const router = useRouter();
 
     const handleBlurDropdownElement = () => { 
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
       }
     };
+
+    const handleNavigate = () => {
+      router.push("/");
+    }
 
     return (
       <header className='border-b border-base-300 fixed w-full top-0 z-40 backdrop-blur-lg bg-base-100/80'>
@@ -48,7 +54,7 @@ const Navbar = () => {
                       </Link>
                     </li>
                     <li>
-                      <button type='button' className='btn btn-ghost' onClick={() => { logout(); handleBlurDropdownElement() }}>
+                      <button type='button' className='btn btn-ghost' onClick={() => { logout(handleNavigate); handleBlurDropdownElement() }}>
                         <LogOut className='size-5'/>
                         <span className="inline">Logout</span>
                       </button>
