@@ -1,15 +1,30 @@
 import { axiosInstance } from "@/lib/axios";
 import { LoginForm } from "@/types/authstore.type";
+import { User } from "@/types/authuser.type";
 import toast from "react-hot-toast";
 import { create } from "zustand";
 
-export const useAuthStore = create((set) => ({
+interface AuthStore {
+    authUser: User | null,
+    isSigningUp: boolean,
+    isLogingIng: boolean,
+    isUpdatingProfile: boolean,
+    isCheckingAuth: boolean,
+    onlineUsers: Array<User>,
+    checkAuth: () => Promise<void>,
+    signup: (data:any) => Promise<void>,
+    login: (loginFormData:LoginForm) => Promise<void>,
+    logout: (callback:Function) => Promise<void>,
+    updateProfile: (data:any) => Promise<void>,
+}
+
+export const useAuthStore = create<AuthStore>((set) => ({
     authUser: null,
     isSigningUp: false,
     isLogingIng: false,
     isUpdatingProfile: false,
-
     isCheckingAuth: true,
+    onlineUsers: [],
 
     checkAuth: async () => {
         try {
