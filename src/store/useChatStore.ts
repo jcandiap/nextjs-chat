@@ -12,6 +12,7 @@ interface ChatStore {
     isMessagesLoading:boolean,
     getUsers: () => Promise<void>,
     getMessages: (userId:string) => Promise<void>,
+    sendMessage: (messageData:any) => Promise<void>,
     setSelectedUser: (selectedUser:User | null) => void,
     subscribeToMessages: () => Promise<void>,
     unsubscribeFromMessages: () => Promise<void>
@@ -26,7 +27,7 @@ interface Message {
     createdAt: Date,
 }
 
-export const useChatStore = create<ChatStore>((set) => ({
+export const useChatStore = create<ChatStore>((set, get) => ({
     messages: [],
     users: [],
     selectedUser: null,
@@ -54,6 +55,16 @@ export const useChatStore = create<ChatStore>((set) => ({
             toast.error(error.response?.data?.message || "Error fetching users");
         } finally {
             set({ isMessagesLoading: false });
+        }
+    },
+
+    sendMessage: async (messageData:any) => {
+        const { selectedUser, messages } = get();
+        try {
+            const response = await axiosInstance.post(`/messages/send/${ selectedUser?._id }`, messageData);
+            set({ messages: [...messages, response.data] });
+        } catch (error:AxiosError<any> | any) {
+            toast.error(error.response?.data?.message || "Error sending message");
         }
     },
 

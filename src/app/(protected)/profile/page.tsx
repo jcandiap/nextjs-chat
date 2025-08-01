@@ -1,10 +1,9 @@
 "use client";
 
 import { useAuthStore } from '@/store/useAuthStore'
-import { AuthStore } from '@/types/authstore.type';
 import { Camera, Mail, User } from 'lucide-react';
 import Image from 'next/image';
-import React, { ChangeEventHandler, FormEventHandler, useState } from 'react'
+import React, { ChangeEventHandler, useState } from 'react'
 
 const imagePaths = [
     '/avatars/bear.png',
@@ -14,8 +13,8 @@ const imagePaths = [
 ]
 
 export default function Profile() {
-    const { authUser, isUpdatingProfile, updateProfile } = useAuthStore() as AuthStore;
-    const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
+    const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     const handleImageUpdate:ChangeEventHandler<HTMLInputElement> = async (e) => {
         e.preventDefault();
@@ -26,7 +25,7 @@ export default function Profile() {
         reader.readAsDataURL(file);
 
         reader.onload = async () => {
-            const base64Image = reader.result;
+            const base64Image = typeof reader.result === "string" ? reader.result : "";
             setSelectedImage(base64Image);
             await updateProfile({ profilePic: base64Image });
         }
@@ -47,7 +46,7 @@ export default function Profile() {
                     <div className='flex flex-col items-center gap-4'>
                         <div className='relative'>
                             <Image 
-                                src={selectedImage || authUser.profilePic || randomImagePath}
+                                src={selectedImage || authUser?.profilePic || randomImagePath}
                                 width={128}
                                 height={128}
                                 alt='Profile'
@@ -99,7 +98,7 @@ export default function Profile() {
                         <div className='space-y-3 text-sm'>
                             <div className='flex items-center justify-between py-2 border-b border-zinc-700'>
                                 <span>Member Since</span>
-                                <span>{authUser.createdAt?.split("T")[0]}</span>
+                                <span>{authUser?.createdAt?.split("T")[0]}</span>
                             </div>
                             <div className='flex items-center justify-between py-2'>
                                 <span>Account Status</span>
