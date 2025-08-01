@@ -2,7 +2,7 @@
 
 import AuthImagePattern from "@/components/AuthImagePattern";
 import { useAuthStore } from "@/store/useAuthStore";
-import { AuthStore, LoginForm } from "@/types/authstore.type";
+import { LoginForm } from "@/types/authstore.type";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ export default function Login() {
 
   const router = useRouter();
 
-  const { login, isLoggingIn, authUser } = useAuthStore() as AuthStore;
+  const { login, isLogingIng, authUser } = useAuthStore();
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -115,9 +115,9 @@ export default function Login() {
                 <button
                   type="submit"
                   className="btn btn-primary w-full"
-                  disabled={isLoggingIn}
+                  disabled={isLogingIng}
                 >
-                  {isLoggingIn ? (
+                  {isLogingIng ? (
                     <>
                       <Loader2 className="h-5 w-5 animate-spin" />
                       Loading...
