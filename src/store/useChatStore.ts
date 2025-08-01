@@ -12,14 +12,18 @@ interface ChatStore {
     isMessagesLoading:boolean,
     getUsers: () => Promise<void>,
     getMessages: (userId:string) => Promise<void>,
-    setSelectedUser: (selectedUser:User) => void
+    setSelectedUser: (selectedUser:User | null) => void,
+    subscribeToMessages: () => Promise<void>,
+    unsubscribeFromMessages: () => Promise<void>
 }
 
 interface Message {
+    _id: string,
     senderId: string,
     receiverId: string,
     text: string,
     image: string,
+    createdAt: Date,
 }
 
 export const useChatStore = create<ChatStore>((set) => ({
@@ -53,5 +57,13 @@ export const useChatStore = create<ChatStore>((set) => ({
         }
     },
 
-    setSelectedUser: (selectedUser:User) => set({ selectedUser })
+    setSelectedUser: (selectedUser:User | null) => set({ selectedUser }),
+
+    subscribeToMessages: async () => {
+
+    }, 
+
+    unsubscribeFromMessages: async () => {
+        
+    }
 }));

@@ -7,13 +7,6 @@ import { Users } from 'lucide-react';
 import Image from 'next/image';
 import { useAuthStore } from '@/store/useAuthStore';
 
-const imagePaths = [
-    '/avatars/bear.png',
-    '/avatars/chicken.png',
-    '/avatars/meerkat.png',
-    '/avatars/rabbit.png',
-]
-
 const Sidebar = () => {
     const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
     const { onlineUsers } = useAuthStore();
@@ -23,11 +16,6 @@ const Sidebar = () => {
     }, [getUsers]);
 
     if( isUsersLoading ) return <SidebarSkeleton />
-
-    const handleGetRandomImage = () => {
-        const randomIndex = Math.floor(Math.random() * imagePaths.length);
-        return imagePaths[randomIndex];
-    }
 
     return (
         <aside className='h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200'>
@@ -50,7 +38,7 @@ const Sidebar = () => {
                         `}>
                         <div className="relative mx-auto lg:mx-0">
                             <Image
-                                src={user?.profilePic || handleGetRandomImage()}
+                                src={user?.profilePic || '/avatars/user.png'}
                                 alt={user?.fullName}
                                 width={48}
                                 height={48}
