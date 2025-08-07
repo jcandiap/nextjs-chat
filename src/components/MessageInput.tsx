@@ -10,6 +10,7 @@ const MessageInput = () => {
   const [text, setText] = useState<string>("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { sendMessage } = useChatStore();
 
@@ -42,6 +43,20 @@ const MessageInput = () => {
 
   const handleSendMessage:FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    if( !text.trim() && !imagePreview ) return;
+    try {
+      await sendMessage({
+          text: text.trim(),
+          image: imagePreview
+      });
+
+      setText("");
+      setImagePreview(null);
+      inputRef.current?.focus;
+      if( fileInputRef.current ) fileInputRef.current.value = '';
+    } catch (error) {
+      
+    }
   }
 
   return (
@@ -71,6 +86,7 @@ const MessageInput = () => {
             className='w-full input input-bordered rounded-lg input-sm sm:input-md focus:outline-none'
             placeholder='Type a message...'
             value={text}
+            ref={inputRef}
             onChange={(e) => setText(e.target.value)}/>
           <input 
             type='file'
