@@ -55,7 +55,7 @@ const MessageInput = () => {
       inputRef.current?.focus;
       if( fileInputRef.current ) fileInputRef.current.value = '';
     } catch (error) {
-      
+      console.log("Failed to send message:", error);
     }
   }
 
