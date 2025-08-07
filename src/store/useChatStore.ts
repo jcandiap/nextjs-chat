@@ -4,6 +4,8 @@ import { axiosInstance } from "@/lib/axios";
 import { AxiosError } from "axios";
 import { User } from "@/types/authuser.type";
 
+// TODO: Create loader when sending message
+
 interface ChatStore {
     messages: Array<Message>,
     users: Array<User>,

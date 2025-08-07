@@ -34,6 +34,8 @@ const ChatContainer = () => {
         </div>
     )
 
+    // TODO: Build image viewer with popup
+
     return (
     <div className="flex-1 flex flex-col overflow-auto">
       <ChatHeader />
