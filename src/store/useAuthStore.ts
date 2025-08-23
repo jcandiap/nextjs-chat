@@ -13,7 +13,7 @@ interface AuthStore {
     isLogingIng: boolean,
     isUpdatingProfile: boolean,
     isCheckingAuth: boolean,
-    onlineUsers: Array<User>,
+    onlineUsers: Array<any>,
     socket: any,
     checkAuth: () => Promise<void>,
     signup: (data:any) => Promise<void>,
