@@ -11,12 +11,10 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 
   const { theme } = useStoreTheme();
 
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore() as {
-    authUser: any
-    checkAuth: () => void
-    isCheckingAuth: boolean
-  }
+  const { authUser, checkAuth, isCheckingAuth, onlineUsers } = useAuthStore();
   const router = useRouter();
+
+  console.log({ onlineUsers });
 
   useEffect(() => {
     checkAuth();
