@@ -3,8 +3,7 @@ import toast from "react-hot-toast";
 import { axiosInstance } from "@/lib/axios";
 import { AxiosError } from "axios";
 import { User } from "@/types/authuser.type";
-
-// TODO: Create loader when sending message
+import { useAuthStore } from "./useAuthStore";
 
 interface ChatStore {
     messages: Array<Message>,
@@ -73,10 +72,37 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     setSelectedUser: (selectedUser:User | null) => set({ selectedUser }),
 
     subscribeToMessages: async () => {
+        debugger;
+        const { selectedUser } = get();
+        if (!selectedUser) return;
+        debugger;
 
+        const socket = useAuthStore.getState().socket;
+
+        if( socket ) {
+            socket.onAny((event, args) => {
+                console.log(`Executed event ${ event }!!`);
+            });
+
+            console.log(`My Socket ID::: ${ socket.id }`);
+
+            socket.on("newMessage", (newMessage: any) => {
+                debugger;
+                const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
+                console.log('IS EQUALS:::', isMessageSentFromSelectedUser);
+                if (!isMessageSentFromSelectedUser) return;
+    
+                set({
+                    messages: [...get().messages, newMessage],
+                });
+            });
+        }
     }, 
 
     unsubscribeFromMessages: async () => {
-        
+        const socket = useAuthStore.getState().socket;
+        if( socket ) {
+            socket.off("newMessage");
+        }
     }
 }));

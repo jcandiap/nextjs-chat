@@ -3,7 +3,7 @@ import { LoginForm } from "@/types/authstore.type";
 import { User } from "@/types/authuser.type";
 import toast from "react-hot-toast";
 import { create } from "zustand";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
 const BASE_URL = 'http://localhost:5001';
 
@@ -14,7 +14,7 @@ interface AuthStore {
     isUpdatingProfile: boolean,
     isCheckingAuth: boolean,
     onlineUsers: Array<any>,
-    socket: any,
+    socket: Socket | null,
     checkAuth: () => Promise<void>,
     signup: (data:any) => Promise<void>,
     login: (loginFormData:LoginForm) => Promise<void>,
